@@ -8,8 +8,27 @@
 import SwiftUI
 
 struct SettingsView: View {
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+
+        ZStack {
+
+            Color(.systemGray6)
+                .ignoresSafeArea()
+
+            VStack(spacing: 24) {
+
+                Image(systemName: "gearshape.fill")
+                    .font(.system(size: 70))
+                    .foregroundColor(.blue)
+
+                Text("Settings")
+                    .font(.largeTitle.bold())
+
+                Text("More features coming soon")
+                    .foregroundColor(.gray)
+            }
+        }
     }
 }
 
