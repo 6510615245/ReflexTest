@@ -1,10 +1,3 @@
-//
-//  README.md
-//  ReflexTest
-//
-//  Created by Ploypan on 30/5/2569 BE.
-//
-
 # Reflex Test Application
 
 ## 1. Project Overview
@@ -149,11 +142,7 @@ Current Color = RED
 
 ระบบจะถือว่า Fail
 
-และแสดงข้อความ
-
-FAILED
-
-จากนั้นรอประมาณ 1.2 วินาที ก่อนเข้าสู่หน้าผลลัพธ์
+และแสดงข้อความ FAILED
 
 ---
 
