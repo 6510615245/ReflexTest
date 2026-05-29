@@ -5,14 +5,10 @@
 //  Created by Ploypan on 30/5/2569 BE.
 //
 
-import SwiftUI
+import Foundation
+import Combine
 
-struct AppNavigationManager: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+class AppNavigationManager: ObservableObject {
 
-#Preview {
-    AppNavigationManager()
+    @Published var selectedTab: Int = 0
 }
