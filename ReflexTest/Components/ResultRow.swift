@@ -2,17 +2,45 @@
 //  ResultRow.swift
 //  ReflexTest
 //
-//  Created by Ploypan on 30/5/2569 BE.
+//  Created by Ploypan on 29/5/2569 BE.
 //
 
 import SwiftUI
 
 struct ResultRow: View {
+
+    let icon: String
+    let title: String
+    let value: String
+    let color: Color
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+
+        HStack {
+
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(color)
+                .frame(width: 42)
+
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.white)
+
+            Spacer()
+
+            Text(value)
+                .font(.headline.bold())
+                .foregroundColor(.white)
+        }
     }
 }
 
 #Preview {
-    ResultRow()
+    ResultRow(
+        icon: "crown.fill",
+        title: "Best Time",
+        value: "0.215 s",
+        color: .yellow
+    )
 }
