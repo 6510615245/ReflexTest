@@ -11,13 +11,14 @@ struct ResultView: View {
 
     @EnvironmentObject var gameManager: GameManager
 
-    let reactionTime: Double
+    let reactionTime: Double?
+    let missedTime: Double
+    let didFail: Bool
     let onPlayAgain: () -> Void
+    let onBackToHome: () -> Void
 
     var body: some View {
-
         ZStack {
-
             LinearGradient(
                 colors: [
                     Color(red: 0.05, green: 0.06, blue: 0.08),
@@ -29,25 +30,24 @@ struct ResultView: View {
             .ignoresSafeArea()
 
             VStack(spacing: 26) {
-
-                Text("RESULT 🎉")
-                    .font(.system(size: 30, weight: .black))
+                Text(didFail ? "FAILED" : "RESULT 🎉")
+                    .font(.system(size: 32, weight: .black))
                     .foregroundColor(.white)
                     .padding(.top, 36)
 
                 VStack(spacing: 12) {
+                    Image(systemName: didFail ? "xmark.circle.fill" : "stopwatch.fill")
+                        .font(.system(size: 58))
+                        .foregroundColor(didFail ? .red : .green)
 
-                    Image(systemName: "stopwatch.fill")
-                        .font(.system(size: 54))
-                        .foregroundColor(.green)
+                    Text(didFail ? "You Missed!" : formattedReactionTime)
+                        .font(.system(size: didFail ? 38 : 54, weight: .black))
+                        .foregroundColor(didFail ? .red : .green)
 
-                    Text(String(format: "%.3f s", reactionTime))
-                        .font(.system(size: 54, weight: .black))
-                        .foregroundColor(.green)
-
-                    Text(resultMessage)
-                        .font(.title2.bold())
-                        .foregroundColor(.green)
+                    Text(didFail ? "Focus on the target color" : resultMessage)
+                        .font(.title3.bold())
+                        .foregroundColor(.white.opacity(0.85))
+                        .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 34)
@@ -56,39 +56,27 @@ struct ResultView: View {
                 .padding(.horizontal, 34)
 
                 VStack(spacing: 22) {
-
                     ResultRow(
                         icon: "crown.fill",
                         title: "Best Time",
-                        value:
-                            gameManager.bestTime == 0
-                            ? "-"
-                            : String(format: "%.3f s", gameManager.bestTime),
+                        value: gameManager.bestTime == 0
+                        ? "-"
+                        : String(format: "%.3f s", gameManager.bestTime),
                         color: .yellow
-                    )
-
-                    ResultRow(
-                        icon: "chart.bar.fill",
-                        title: "Average Time",
-                        value:
-                            gameManager.averageTime == 0
-                            ? "-"
-                            : String(format: "%.3f s", gameManager.averageTime),
-                        color: .blue
                     )
 
                     ResultRow(
                         icon: "bolt.fill",
                         title: "This Round",
-                        value: String(format: "%.3f s", reactionTime),
-                        color: .purple
+                        value: didFail ? "FAIL" : formattedReactionTime,
+                        color: didFail ? .red : .purple
                     )
 
                     ResultRow(
-                        icon: "target",
-                        title: "Total Attempts",
-                        value: "\(gameManager.attempts)",
-                        color: .green
+                        icon: "timer",
+                        title: "Missed Time",
+                        value: String(format: "%.3f s", missedTime),
+                        color: .blue
                     )
                 }
                 .padding(24)
@@ -97,11 +85,8 @@ struct ResultView: View {
                 .padding(.horizontal, 34)
 
                 Button(action: onPlayAgain) {
-
                     HStack {
-
                         Image(systemName: "arrow.clockwise")
-
                         Text("PLAY AGAIN")
                     }
                     .font(.headline.bold())
@@ -113,16 +98,43 @@ struct ResultView: View {
                 }
                 .padding(.horizontal, 34)
 
+                Button(action: onBackToHome) {
+                    HStack {
+                        Image(systemName: "house.fill")
+                        Text("BACK TO HOME")
+                    }
+                    .font(.headline.bold())
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 62)
+                    .background(Color.blue)
+                    .cornerRadius(18)
+                }
+                .padding(.horizontal, 34)
+
                 Spacer()
             }
         }
     }
 
+    var formattedReactionTime: String {
+        guard let reactionTime else {
+            return "-"
+        }
+
+        return String(format: "%.3f s", reactionTime)
+    }
+
     var resultMessage: String {
+        guard let reactionTime else {
+            return "No result"
+        }
 
         if reactionTime < 0.25 {
+            return "Excellent!"
+        } else if reactionTime < 0.60 {
             return "Great!"
-        } else if reactionTime < 0.40 {
+        } else if reactionTime < 1.20 {
             return "Good!"
         } else {
             return "Keep Practicing!"
@@ -132,8 +144,11 @@ struct ResultView: View {
 
 #Preview {
     ResultView(
-        reactionTime: 0.248,
-        onPlayAgain: {}
+        reactionTime: 0.531,
+        missedTime: 0.800,
+        didFail: false,
+        onPlayAgain: {},
+        onBackToHome: {}
     )
     .environmentObject(GameManager())
 }

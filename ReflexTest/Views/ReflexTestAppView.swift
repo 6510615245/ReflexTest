@@ -8,24 +8,33 @@
 import SwiftUI
 
 struct ReflexTestAppView: View {
+
     @StateObject private var gameManager = GameManager()
+    @StateObject private var settingsManager = SettingsManager()
+    @StateObject private var navigationManager = AppNavigationManager()
 
     var body: some View {
-        TabView {
+        TabView(selection: $navigationManager.selectedTab) {
             NavigationStack {
                 HomeView()
             }
             .environmentObject(gameManager)
+            .environmentObject(settingsManager)
+            .environmentObject(navigationManager)
             .tabItem {
                 Image(systemName: "house.fill")
                 Text("Home")
             }
+            .tag(0)
 
-            SettingsView()
+            SettingsView(selectedTab: $navigationManager.selectedTab)
+                .environmentObject(settingsManager)
+                .environmentObject(navigationManager)
                 .tabItem {
                     Image(systemName: "gearshape.fill")
                     Text("Settings")
                 }
+                .tag(1)
         }
         .tint(.blue)
     }
