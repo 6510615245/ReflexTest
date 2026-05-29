@@ -5,14 +5,26 @@
 //  Created by Ploypan on 29/5/2569 BE.
 //
 
-import SwiftUI
+import Foundation
 
-struct GameSettings: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct GameSettings {
+
+    static let defaultColors = [
+        "BLUE",
+        "RED",
+        "GREEN",
+        "YELLOW"
+    ]
+
+    var selectedColors: [String]
+
+    init(
+        selectedColors: [String] = GameSettings.defaultColors
+    ) {
+        self.selectedColors = selectedColors
     }
-}
 
-#Preview {
-    GameSettings()
+    mutating func resetToDefault() {
+        selectedColors = GameSettings.defaultColors
+    }
 }

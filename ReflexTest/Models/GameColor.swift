@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct GameColor: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+struct GameColor: Identifiable, Equatable {
+    let id = UUID()
+    let name: String
+    let color: Color
 
-#Preview {
-    GameColor()
+    static func == (lhs: GameColor, rhs: GameColor) -> Bool {
+        lhs.name == rhs.name
+    }
 }
